@@ -1,23 +1,35 @@
 // Creating a simple counter using React which increments or decrements
 // count dynamically on-screen as the user clicks on the button
 
-import { useButton } from "./util";
+import { useState } from "react";
 
-function CounterPure({ decClicks, decProps, incClicks, incProps }) {
+export default function Counter() {
+  const [count, setCount] = useState(0);
+
+  function setIncCount() {
+    setCount((prevCount) => prevCount + 1);
+  }
+
+  function setDecCount() {
+    setCount((prevCount) => prevCount - 1);
+  }
+
   return (
-    <>
-      {incClicks - decClicks}
-      <br />
-      <button {...decProps}>Dec</button>
-      <button {...incProps}>Inc</button>
-    </>
+    <CounterPure
+      count={count}
+      onIncClick={setIncCount}
+      onDecClick={setDecCount}
+    />
   );
 }
 
-function Counter() {
-  const [decProps, decClicks] = useButton();
-  const [incProps, incClicks] = useButton();
-  return <CounterPure {...{ decClicks, decProps, incClicks, incProps }} />;
+function CounterPure({ count, onIncClick, onDecClick }) {
+  return (
+    <>
+      {count}
+      <br />
+      <button onClick={onDecClick}>Dec</button>
+      <button onClick={onIncClick}>Inc</button>
+    </>
+  );
 }
-
-export default Counter;
