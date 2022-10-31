@@ -2,7 +2,7 @@
 // of fruits based on the search query entered by the user.
 
 import { nanoid } from "nanoid";
-import { useTextInput } from "./util";
+import { useState } from "react";
 
 function DisplayFruits({ fruits }) {
   return (
@@ -14,17 +14,22 @@ function DisplayFruits({ fruits }) {
   );
 }
 
-function SearchFilterPure({ inputText, inputProps, fruits }) {
-  const filtered = fruits.filter((m) => m.name.includes(inputText));
+function SearchFilterPure({ fruits, filterText, onFilterTextChange }) {
+  const filtered = fruits.filter((m) => m.name.includes(filterText));
   return (
     <>
-      <input type="text" {...inputProps} />
+      <input
+        type="text"
+        value={filterText}
+        placeholder="Search..."
+        onChange={(e) => onFilterTextChange(e.target.value)}
+      />
       <DisplayFruits fruits={filtered} />
     </>
   );
 }
 
-function SearchFilter() {
+export default function SearchFilter() {
   const fruits = [
     { name: "banana", id: nanoid() },
     { name: "apple", id: nanoid() },
@@ -34,8 +39,12 @@ function SearchFilter() {
     { name: "raspberry", id: nanoid() },
     { name: "blackberry", id: nanoid() },
   ];
-  const [inputProps, inputText] = useTextInput("");
-  return <SearchFilterPure {...{ inputText, inputProps, fruits }} />;
+  const [filterText, setFilterText] = useState("");
+  return (
+    <SearchFilterPure
+      fruits={fruits}
+      filterText={filterText}
+      onFilterTextChange={setFilterText}
+    />
+  );
 }
-
-export default SearchFilter;
