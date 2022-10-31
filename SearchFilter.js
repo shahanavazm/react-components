@@ -29,7 +29,7 @@ function SearchFilterPure({ fruits, filterText, onFilterTextChange }) {
   );
 }
 
-function SearchFilterLcl({fruits}) {
+function SearchFilterLcl({ fruits }) {
   const [filterText, setFilterText] = useState("");
   return (
     <SearchFilterPure
@@ -39,6 +39,7 @@ function SearchFilterLcl({fruits}) {
     />
   );
 }
+
 export default function SearchFilter() {
   const fruits = [
     { name: "banana", id: nanoid() },
@@ -49,9 +50,5 @@ export default function SearchFilter() {
     { name: "raspberry", id: nanoid() },
     { name: "blackberry", id: nanoid() },
   ];
-  return (
-    <SearchFilterLcl
-      fruits={fruits}
-    />
-  );
+  return <SearchFilterLcl fruits={fruits} />;
 }
