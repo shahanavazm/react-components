@@ -3,11 +3,6 @@
 
 import { useState } from "react";
 
-function Para({ paraText, hidePara }) {
-  const display = hidePara ? "none" : "block";
-  return <p style={{ display }}>{paraText}</p>;
-}
-
 function AccordianPure({ headingText, paraText, hidePara, onHeadingClick }) {
   return (
     <>
@@ -15,7 +10,7 @@ function AccordianPure({ headingText, paraText, hidePara, onHeadingClick }) {
         <button onClick={onHeadingClick}>{headingText}</button>
       </div>
       <div>
-        <Para paraText={paraText} hidePara={hidePara} />
+        <p style={{ display: hidePara ? "none" : "block" }}>{paraText}</p>
       </div>
     </>
   );
