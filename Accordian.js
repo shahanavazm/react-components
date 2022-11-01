@@ -1,19 +1,18 @@
 // Creating an accordion that toggles text content
 // on click of the accordion header
 
-import { useButton } from "./util";
+import { useState } from "react";
 
 function Para({ paraText, hidePara }) {
-  const display = hidePara ? "none" : "inline";
+  const display = hidePara ? "none" : "block";
   return <p style={{ display }}>{paraText}</p>;
 }
 
-function AccordianPure({ headingText, headingProps, headingClicks, paraText }) {
-  const hidePara = (headingClicks + 1) % 2;
+function AccordianPure({ headingText, paraText, hidePara, onHeadingClick }) {
   return (
     <>
       <div>
-        <button {...headingProps}>{headingText}</button>
+        <button onClick={onHeadingClick}>{headingText}</button>
       </div>
       <div>
         <Para paraText={paraText} hidePara={hidePara} />
@@ -23,15 +22,21 @@ function AccordianPure({ headingText, headingProps, headingClicks, paraText }) {
 }
 
 function AccordianLcl({ headingText, paraText }) {
-  const [headingProps, headingClicks] = useButton();
+  const [hidePara, setHidePara] = useState(true);
+  function toggleHidePara() {
+    setHidePara((prevHidePara) => !prevHidePara);
+  }
   return (
     <AccordianPure
-      {...{ headingText, headingProps, headingClicks, paraText }}
+      headingText={headingText}
+      paraText={paraText}
+      hidePara={hidePara}
+      onHeadingClick={toggleHidePara}
     />
   );
 }
 
-function Accordian() {
+export default function Accordian() {
   return (
     <>
       <AccordianLcl headingText="heading1" paraText="para1" />
@@ -40,5 +45,3 @@ function Accordian() {
     </>
   );
 }
-
-export default Accordian;
