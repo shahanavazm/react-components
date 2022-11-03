@@ -18,17 +18,12 @@ function TodoPure({
   todos,
   onTodoTextChange,
   onTodoTextSubmit,
-  onResetClick,
   onIsDoneChange,
+  onResetClick,
 }) {
-  function handleOnSubmit(e) {
-    e.preventDefault();
-    onTodoTextSubmit();
-  }
-
   return (
     <>
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={(e) => e.preventDefault() || onTodoTextSubmit()}>
         <input
           type="text"
           value={todoText}
