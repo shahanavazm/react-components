@@ -31,7 +31,7 @@ function hasWon(x, y, boardState, currPlayer) {
   return false;
 }
 
-function TicTacToeLcl() {
+export default function TicTacToe() {
   const initialBoardState = [
     ["_", "_", "_"],
     ["_", "_", "_"],
@@ -92,9 +92,3 @@ function TicTacToeLcl() {
     </>
   );
 }
-
-function TicTacToe() {
-  return <TicTacToeLcl />;
-}
-
-export default TicTacToe;
