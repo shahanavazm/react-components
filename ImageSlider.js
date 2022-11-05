@@ -5,69 +5,57 @@ import { useState } from "react";
 import { nanoid } from "nanoid";
 import styles from "./ImageSlider.module.css";
 
-function DisplayImage({ src }) {
-  return `displaying image with source: ${src}.`;
-}
-
-function DisplayCircle({ filled, onClick }) {
-  // render inputs:
-  // - filled
-  // - setCurrImgIndexI
-  let className = styles.circle;
-  className += filled ? " " + styles.filled : "";
-
-  return <span className={className} onClick={onClick} />;
-}
-
-function DisplayCircles({ images, currImgIndex, setCurrImgIndex }) {
-  function getDisplayCircle(item, i) {
-    const filled = i === currImgIndex ? true : false;
-
-    function setCurrImgIndexI() {
-      setCurrImgIndex(i);
-    }
-
-    const handleClick = setCurrImgIndexI;
-
-    return (
-      <DisplayCircle filled={filled} onClick={handleClick} key={item.id} />
-    );
-  }
-  return <div>{images.map(getDisplayCircle)}</div>;
+function ImageSliderPure({
+  images,
+  currImgIndex,
+  onPrevClick,
+  onNextClick,
+  onCircleClick,
+}) {
+  return (
+    <>
+      <button onClick={onPrevClick}>Prev</button>
+      <span>image {images[currImgIndex].src}</span>
+      <button onClick={onNextClick}>Next</button>
+      <div>
+        {images.map((item, index) => (
+          <span
+            onClick={() => onCircleClick(index)}
+            className={
+              styles.circle +
+              (index === currImgIndex ? " " + styles.filled : "")
+            }
+            key={item.id}
+          />
+        ))}
+      </div>
+    </>
+  );
 }
 
 function ImageSliderLcl({ images }) {
   const [currImgIndex, setCurrImgIndex] = useState(0);
 
   function setCurrImgIndexPrev() {
-    setCurrImgIndex((c) => Math.max(c - 1, 0));
+    setCurrImgIndex(Math.max(currImgIndex - 1, 0));
   }
 
   function setCurrImgIndexNext() {
-    setCurrImgIndex((c) => Math.min(c + 1, images.length - 1));
+    setCurrImgIndex(Math.min(currImgIndex + 1, images.length - 1));
   }
 
-  const handlePrevOnClick = setCurrImgIndexPrev;
-  const handleNextOnClick = setCurrImgIndexNext;
-
-  // render inputs:
-  // - handlePrevOnClick
-  // - handleNextOnClick
-  // - images
-  // - currImgIndex
-  // - setCurrImgIndex
-  const src = images[currImgIndex].src;
   return (
-    <>
-      <button onClick={handlePrevOnClick}>Prev</button>
-      <DisplayImage src={src} />
-      <button onClick={handleNextOnClick}>Next</button>
-      <DisplayCircles {...{ images, currImgIndex, setCurrImgIndex }} />
-    </>
+    <ImageSliderPure
+      images={images}
+      currImgIndex={currImgIndex}
+      onPrevClick={setCurrImgIndexPrev}
+      onNextClick={setCurrImgIndexNext}
+      onCircleClick={setCurrImgIndex}
+    />
   );
 }
 
-function ImageSlider() {
+export default function ImageSlider() {
   const images = [
     { src: "i1.jpeg", id: nanoid() },
     { src: "i2.jpeg", id: nanoid() },
@@ -78,5 +66,3 @@ function ImageSlider() {
   ];
   return <ImageSliderLcl images={images} />;
 }
-
-export default ImageSlider;
