@@ -4,16 +4,6 @@
 import { nanoid } from "nanoid";
 import { useState } from "react";
 
-function DisplayFruits({ fruits }) {
-  return (
-    <ul>
-      {fruits.map((fruit, i) => (
-        <li key={fruit.id}>{fruit.name}</li>
-      ))}
-    </ul>
-  );
-}
-
 function SearchFilterPure({ fruits, filterText, onFilterTextChange }) {
   const filtered = fruits.filter((m) => m.name.includes(filterText));
   return (
@@ -24,7 +14,11 @@ function SearchFilterPure({ fruits, filterText, onFilterTextChange }) {
         placeholder="Search..."
         onChange={(e) => onFilterTextChange(e.target.value)}
       />
-      <DisplayFruits fruits={filtered} />
+      <ul>
+        {filtered.map((fruit, i) => (
+          <li key={fruit.id}>{fruit.name}</li>
+        ))}
+      </ul>
     </>
   );
 }
